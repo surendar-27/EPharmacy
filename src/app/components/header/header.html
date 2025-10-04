@@ -1,0 +1,36 @@
+<nav class="navbar">
+  <div class="title">
+    <i class="bi bi-heart-pulse"></i>
+    &nbsp;
+    <span class="title" (click)="gotoHome()">E-Pharmacy</span>
+    &nbsp;
+    @if (loggedIn) {
+      <span><a routerLink="/" class="home">Medicines</a></span>
+    }
+  </div>
+  <div class="links">
+  @if (loggedIn) {
+    <div class="cart-container" (click)="cart()">
+      <i class="bi bi-cart3 cart-icon"></i>
+      <span class="cart-count">{{cartCount}}</span>
+    </div>
+    <div class="dropdown" (click)="dropdown()">
+      <button class="dropdownbtn">Welcome, {{ username }}</button>
+      @if (isDropdownOpen) {
+        <div class="dropdown-content">
+          <a class="dropdwn" routerLink="/profile">My Profile</a>
+          <a class="dropdwn" routerLink="/orders">My Orders</a>
+          <span class="dropdwn" (click)="logout()">Logout</span>
+        </div>
+      }
+    </div>
+  } @else {
+    @if (credpage) {
+      <div>
+        <a routerLink="/login" class="login">Login</a>
+        &nbsp;
+        <a routerLink="/register" class="register">Register</a>
+      </div>
+    }
+  }
+</div>

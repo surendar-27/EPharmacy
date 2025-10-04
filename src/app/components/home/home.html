@@ -1,1 +1,59 @@
-<p>home works!</p>
+<div class="topbar">
+  <div class="searchdiv">
+    <input type="text" [(ngModel)]="searchQuerry" (input)="filterSuggestions()" placeholder="Search using Medicine name"
+      class="searchbar">
+    @if (filteredSuggestions.length > 0) {
+    <ul class="suggestion">
+      @for(let suggestion of filteredSuggestions) {
+      <li (click)="selectSuggestion(suggestion)">{{ suggestion }}</li>
+      }
+    </ul>
+    }
+    <button (click)="searchMedicine()" class="searchbtn">Search</button>
+  </div>
+  <div class="sort">
+    <select (change)="sortMedicines()" [(ngModel)]="sortOption" class="sortby">
+      <option value="" disabled selected>Sort By</option>
+      <option value="priceLowToHigh">Price: Low to High</option>
+      <option value="priceHighToLow">Price: High to Low</option>
+      <option value="nameAToZ">Name: A to Z</option>
+      <option value="nameZToA">Name: Z to A</option>
+    </select>
+  </div>
+</div>
+<br />
+<div>
+  @if (displayedMedicines.length === 0) {
+  <p class="noresults">No medicines found.</p>
+  }
+  @if (successMessage) {
+  <p class="successMesssage">{{ successMessage }}</p>
+  }
+  <div class="grid">
+    @for (let medicine of displayedMedicines) {
+    <div class="card">
+      <section (click)="details(medicine.medicineId)" class="details">
+        <h4>{{medicine.medicineName}}</h4>
+        <div class="contents">
+          <div class="imgdiv">
+            <img [src]="medicine.imageUrl" alt="{{medicine.medicineName}}" class="medimage">
+          </div>
+          <br />
+          <p>{{medicine.price-(medicine.price*medicine.discountPercent/100)| currency: 'INR' : 'symbol' : '1.2-2'}}
+            &nbsp;<s>{{medicine.price | currency: 'INR' : 'symbol' : '1.2-2'}}</s></p>
+          <p>Get {{medicine.discountPercent}}&percnt; Off</p>
+          <br />
+        </div>
+      </section>
+      <button (click)="addToCart(medicine.medicineId)" class="addtocartbtn">Add to Cart</button>
+    </div>
+    }
+  </div>
+  <br />
+  <div class="pagination">
+    <button (click)="loadMedicine(currrentPage-1)" [disabled]="currentPage === 1" class="pagebtn">Previous</button>
+    &nbsp;
+    <span>Page {{currentPage}} of {{ totalPages }}</span> &nbsp;
+    <button (click)="loadMedicine(currentPage+1)" [disabled]="currentPage === totalPages" class="pagebtn">Next</button>
+  </div>
+</div>
